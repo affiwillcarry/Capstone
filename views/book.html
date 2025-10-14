@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Appointment - Community Healthcare</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Book Appointment</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/book">Book Appointment</a>
+      <a href="#">Chat Support</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <main class="form-page">
+    <h2>Book Your Appointment</h2>
+    <form action="/book" method="POST">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="clinic">Choose Clinic</label>
+      <select id="clinic" name="clinic" required>
+        <option value="">-- Select Clinic --</option>
+        <option>Downtown Medical Center</option>
+        <option>Northside Family Clinic</option>
+        <option>Calgary Health Point</option>
+      </select>
+
+      <label for="date">Preferred Date</label>
+      <input type="date" id="date" name="date" required />
+
+      <label for="reason">Reason for Visit</label>
+      <textarea id="reason" name="reason" rows="3" required></textarea>
+
+      <button type="submit">Confirm Appointment</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>© 2025 Community Healthcare Platform</p>
+  </footer>
+</body>
+</html>
