@@ -21,15 +21,21 @@ app.get("/book", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "book.html"));
 });
 
-// Handle form submission (no database yet)
+// Handle form submission
 app.post("/book", (req, res) => {
+  // Extract form data (optional if you want to log later)
   const { name, email, clinic, date, reason } = req.body;
-  res.send(`
-    <h2>✅ Appointment Confirmed</h2>
-    <p>Thank you, <strong>${name}</strong>!</p>
-    <p>Your appointment at <strong>${clinic}</strong> on <strong>${date}</strong> for <em>${reason}</em> has been received.</p>
-    <a href="/">Return to Home</a>
-  `);
+
+  console.log("New appointment booked:");
+  console.log(`Name: ${name}`);
+  console.log(`Email: ${email}`);
+  console.log(`Clinic: ${clinic}`);
+  console.log(`Date: ${date}`);
+  console.log(`Reason: ${reason}`);
+
+  // Show styled confirmation page
+  res.sendFile(path.join(__dirname, "views", "confirmation.html"));
 });
 
+// Start server
 app.listen(port, () => console.log(`✅ Server running on port ${port}`));
