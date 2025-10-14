@@ -1,15 +1,19 @@
-// Simple Azure Test Web App (Node.js + Express)
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 8080;
 
+// Serve static assets (CSS, JS, images)
+app.use(express.static(path.join(__dirname, "public")));
+
+// Serve HTML pages
 app.get("/", (req, res) => {
-  res.send(`
-    <h1>🎉 Azure + GitHub Deployment Successful!</h1>
-    <p>Your app is live and connected correctly.</p>
-    <p>Deployed at: ${new Date().toLocaleString()}</p>
-  `);
+  res.sendFile(path.join(__dirname, "views", "index.html"));
 });
 
 app.listen(port, () => {
