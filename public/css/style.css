@@ -76,62 +76,72 @@ footer {
 /* ------------------------------
    Booking Form Layout
 --------------------------------*/
-.booking-form {
+
+
+.book-container {
+  max-width: 600px;
+  margin: 2.5rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #0078d4;
+}
+
+.clean-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
 }
 
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-}
-
-.form-row.single {
-  grid-template-columns: 1fr;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group label {
-  font-weight: 600;
+.clean-form label {
   margin-bottom: 0.4rem;
+  font-weight: 600;
+  color: #333;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
-  padding: 0.6rem;
+.clean-form input,
+.clean-form select,
+.clean-form textarea {
+  margin-bottom: 1.2rem;
+  padding: 0.8rem;
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 1rem;
+  transition: border 0.2s, box-shadow 0.2s;
 }
 
-.form-group textarea {
-  resize: vertical;
+.clean-form input:focus,
+.clean-form select:focus,
+.clean-form textarea:focus {
+  border-color: #0078d4;
+  box-shadow: 0 0 5px rgba(0, 120, 212, 0.3);
+  outline: none;
 }
 
-.btn {
-  background: #0078d4;
+.submit-btn {
+  background-color: #0078d4;
   color: white;
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
   border: none;
+  padding: 0.9rem;
   border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  align-self: center;
+  transition: background 0.3s;
 }
 
-.btn:hover {
-  background: #005fa3;
+.submit-btn:hover {
+  background-color: #005fa3;
 }
 
-@media (max-width: 768px) {
-  .form-row {
-    grid-template-columns: 1fr;
+@media (max-width: 600px) {
+  .book-container {
+    margin: 1rem;
+    padding: 1.5rem;
   }
 }
