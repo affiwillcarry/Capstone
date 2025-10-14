@@ -145,3 +145,63 @@ footer {
     padding: 1.5rem;
   }
 }
+
+
+
+/* ------------------------------
+   Confirmation Page Styles
+--------------------------------*/
+.confirmation-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  background-color: #f7f9fb;
+}
+
+.confirmation-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 450px;
+}
+
+.checkmark {
+  font-size: 3rem;
+  color: #2ecc71;
+  background: #e8f9ee;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.confirmation-card h2 {
+  color: #0078d4;
+  margin-bottom: 1rem;
+}
+
+.confirmation-card p {
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.back-btn {
+  display: inline-block;
+  background-color: #0078d4;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.back-btn:hover {
+  background-color: #005fa3;
+}
