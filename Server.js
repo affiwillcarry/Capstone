@@ -8,14 +8,28 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 8080;
 
-// Serve static assets (CSS, JS, images)
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({ extended: true }));
 
-// Serve HTML pages
+// Home page
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
 });
 
-app.listen(port, () => {
-  console.log(`✅ Server running on port ${port}`);
+// Book appointment page
+app.get("/book", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "book.html"));
 });
+
+// Handle form submission (no database yet)
+app.post("/book", (req, res) => {
+  const { name, email, clinic, date, reason } = req.body;
+  res.send(`
+    <h2>✅ Appointment Confirmed</h2>
+    <p>Thank you, <strong>${name}</strong>!</p>
+    <p>Your appointment at <strong>${clinic}</strong> on <strong>${date}</strong> for <em>${reason}</em> has been received.</p>
+    <a href="/">Return to Home</a>
+  `);
+});
+
+app.listen(port, () => console.log(`✅ Server running on port ${port}`));
