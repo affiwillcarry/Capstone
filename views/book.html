@@ -1,134 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Book Appointment - Community Healthcare</title>
-
-  <!-- Google font + Font Awesome -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/a2d9b6f1c9.js" crossorigin="anonymous"></script>
-
   <link rel="stylesheet" href="/css/style.css" />
-</head>
-<body>
-  <header>
-    <h1>Community Healthcare</h1>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/book" class="active">Book Appointment</a>
-      <a href="/clinics">Clinics</a>
-      <a href="/contact">Contact</a>
-    </nav>
-  </header>
+  <style>
+    /* Page background and layout */
+    .book-page {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f4f8fb, #eaf3f9);
+      padding: 3rem 1rem;
+    }
 
-  <section class="hero">
-    <div class="container left">
-      <h2>Book a walk-in appointment quickly</h2>
-      <p>Find nearby clinics and schedule a visit. We help reduce wait times and missed appointments for community members.</p>
-    </div>
-  </section>
+    /* Appointment form card */
+    .book-container {
+      width: 100%;
+      max-width: 650px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-  <main class="container">
-    <div class="card clean-form" style="max-width:820px;margin:auto">
-      <h2 style="margin-top:0">Book Your Appointment</h2>
+    .book-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
 
-      <form id="appointmentForm" class="clean-form" autocomplete="off">
-        <label for="name">Full name</label>
-        <input id="name" name="name" required placeholder="Your full name" />
+    /* Title */
+    .book-container h2 {
+      text-align: center;
+      color: #0078d4;
+      margin-bottom: 2rem;
+      font-size: 1.8rem;
+    }
 
-        <label for="email">Email address</label>
-        <input id="email" name="email" type="email" required placeholder="you@example.com" />
+    /* Form fields */
+    .clean-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
 
-        <label for="clinic">Clinic</label>
-        <select id="clinic" name="clinic" required>
-          <option value="">-- Select Clinic --</option>
-          <option>Downtown Medical Center</option>
-          <option>Northside Family Clinic</option>
-          <option>Calgary Health Point</option>
-        </select>
+    .clean-form label {
+      font-weight: 600;
+      color: #333;
+    }
 
-        <label for="date">Preferred date</label>
-        <input id="date" name="date" type="date" required />
+    .clean-form input,
+    .clean-form select,
+    .clean-form textarea {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
 
-        <label for="reason">Reason for visit</label>
-        <textarea id="reason" name="reason" required placeholder="Short description..."></textarea>
+    .clean-form input:focus,
+    .clean-form select:focus,
+    .clean-form textarea:focus {
+      border-color: #0078d4;
+      box-shadow: 0 0 6px rgba(0, 120, 212, 0.3);
+      outline: none;
+    }
 
-        <button type="submit" class="submit-btn"><i class="fa fa-calendar-check"></i> Confirm Appointment</button>
-      </form>
+    /* Submit button */
+    .submit-btn {
+      background-color: #0078d4;
+      color: #fff;
+      border: none;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
 
-      <div class="confirmation" id="confirmationMessage">
-        <i class="fa fa-check-circle" style="margin-right:8px;color:green"></i>
-        Thank you — your appointment request has been received. A confirmation email will arrive soon.
-      </div>
-    </div>
-
-    <!-- clinics preview (optional visual) -->
-    <h3 style="margin-top:28px">Popular clinics</h3>
-    <div class="clinic-grid">
-      <div class="card">
-        <h3>Downtown Medical Center</h3>
-        <p>Open 8am - 6pm · Walk-ins welcome</p>
-      </div>
-      <div class="card">
-        <h3>Northside Family Clinic</h3>
-        <p>Open 9am - 5pm · Booking recommended</p>
-      </div>
-      <div class="card">
-        <h3>Calgary Health Point</h3>
-        <p>Open 7am - 3pm · Family practice</p>
-      </div>
-    </div>
-  </main>
-
-  <footer>
-    © 2025 Community Healthcare Platform
-  </footer>
-
-  <script>
-    const form = document.getElementById('appointmentForm');
-    const confirmation = document.getElementById('confirmationMessage');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const payload = {
-        name: form.name.value.trim(),
-        email: form.email.value.trim(),
-        clinic: form.clinic.value,
-        date: form.date.value,
-        reason: form.reason.value.trim()
-      };
-
-      // <-- replace with your real function URL if different -->
-      const functionUrl = "https://yasir-hkexcffve9brh7d5.canadacentral-01.azurewebsites.net/api/HttpTrigger1?code=9oEvKw_M3RXYCgod4OM4zjgMJn5_m97AZxuxQEZNVrXMAzFuEUXcHg==";
-
-      try {
-        const resp = await fetch(functionUrl, {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify(payload)
-        });
-
-        if (resp.ok) {
-          // show message briefly then redirect to confirmation page
-          confirmation.style.display = 'block';
-          form.reset();
-
-          // wait 1.2s then redirect to nicer confirmation page
-          setTimeout(() => {
-            window.location.href = '/confirmation.html';
-          }, 1200);
-        } else {
-          const txt = await resp.text();
-          console.error('Server responded:', resp.status, txt);
-          alert('Failed to book appointment. Try again later.');
-        }
-      } catch (err) {
-        console.error(err);
-        alert('Error submitting appointment. Try again later.');
-      }
-    });
-  </script>
-</body>
-</html>
+    .submit-btn:hover {
+      background-color: #005fa3
