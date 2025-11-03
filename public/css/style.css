@@ -1,207 +1,84 @@
-body {
-  font-family: "Segoe UI", sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f7f9fb;
-  color: #333;
+/* Google font fallback - included via HTML */
+:root{
+  --brand:#0b63b8;
+  --brand-dark:#06528a;
+  --muted:#6b7280;
+  --bg:#f7f9fb;
+  --card:#ffffff;
+  --success:#e6ffe6;
 }
 
-header {
-  background-color: #0078d4;
-  color: white;
-  padding: 1rem;
-  text-align: center;
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+body{background:var(--bg);color:#0f1724;line-height:1.4}
+
+/* header */
+header{
+  background:#fff;
+  border-bottom:1px solid #e6eef8;
+  padding:14px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
 }
+header h1{margin:0;font-size:1.15rem;color:var(--brand)}
+nav a{margin-right:12px;text-decoration:none;color:var(--muted);font-weight:600}
+nav a.active{color:var(--brand)}
 
-nav a {
-  color: white;
-  margin: 0 1rem;
-  text-decoration: none;
-  font-weight: 500;
+/* hero */
+.hero{
+  background:linear-gradient(180deg, rgba(11,99,184,0.06), rgba(11,99,184,0.02));
+  padding:40px 22px;
+  display:flex;
+  gap:30px;
+  align-items:center;
+  justify-content:center;
 }
-
-nav a:hover {
-  text-decoration: underline;
+.hero .left{
+  max-width:700px;
 }
+.hero h2{font-size:2.1rem;margin:0 0 10px;color:var(--brand-dark)}
+.hero p{margin:0 0 18px;color:var(--muted);font-size:1.05rem}
 
-.hero {
-  text-align: center;
-  padding: 3rem 1rem;
-  background: linear-gradient(120deg, #0078d4, #00a4ef);
-  color: white;
+/* layout */
+.container{max-width:1100px;margin:22px auto;padding:0 18px}
+
+/* clinics grid */
+.clinic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:16px}
+.card{
+  background:var(--card);
+  padding:14px;border-radius:12px;
+  box-shadow:0 6px 18px rgba(12,34,64,0.06);
+  border:1px solid rgba(8,30,60,0.03);
 }
+.card h3{margin:0 0 8px;font-size:1.05rem}
+.card p{margin:0;color:var(--muted);font-size:0.95rem}
 
-.hero button {
-  background: white;
-  color: #0078d4;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 1rem;
+/* form */
+.clean-form{
+  background:var(--card);
+  padding:18px;border-radius:12px;
+  box-shadow:0 10px 30px rgba(8,30,60,0.03);
+  max-width:680px;margin:18px auto;
 }
-
-.hero button:hover {
-  background: #e6e6e6;
+.clean-form label{display:block;margin:10px 0 6px;color:var(--muted);font-size:0.9rem}
+.clean-form input, .clean-form select, .clean-form textarea{
+  width:100%;padding:10px;border:1px solid #e6eef8;border-radius:8px;font-size:1rem;
 }
-
-.features {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.5rem;
-  padding: 2rem;
+.clean-form textarea{min-height:100px;resize:vertical}
+.submit-btn{
+  display:inline-block;margin-top:12px;background:var(--brand);color:#fff;padding:10px 16px;border-radius:10px;border:none;font-weight:700;cursor:pointer;
 }
+.submit-btn:hover{background:var(--brand-dark)}
 
-.card {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  padding: 1rem;
-  text-align: center;
-}
+/* confirmation */
+.confirmation{display:none;margin-top:20px;padding:18px;border-radius:10px;background:var(--success);border:1px solid #bfe6bf;color:#064d06;text-align:center;font-weight:600}
 
-footer {
-  background: #0078d4;
-  color: white;
-  text-align: center;
-  padding: 1rem;
-  margin-top: 2rem;
-}
+/* footer */
+footer{text-align:center;padding:18px;color:var(--muted);font-size:0.9rem;margin-top:28px}
 
-
-
-/* ------------------------------
-   Booking Form Layout
---------------------------------*/
-
-
-.book-container {
-  max-width: 600px;
-  margin: 2.5rem auto;
-  padding: 2rem;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.book-container h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #0078d4;
-}
-
-.clean-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.clean-form label {
-  margin-bottom: 0.4rem;
-  font-weight: 600;
-  color: #333;
-}
-
-.clean-form input,
-.clean-form select,
-.clean-form textarea {
-  margin-bottom: 1.2rem;
-  padding: 0.8rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  transition: border 0.2s, box-shadow 0.2s;
-}
-
-.clean-form input:focus,
-.clean-form select:focus,
-.clean-form textarea:focus {
-  border-color: #0078d4;
-  box-shadow: 0 0 5px rgba(0, 120, 212, 0.3);
-  outline: none;
-}
-
-.submit-btn {
-  background-color: #0078d4;
-  color: white;
-  border: none;
-  padding: 0.9rem;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.submit-btn:hover {
-  background-color: #005fa3;
-}
-
-@media (max-width: 600px) {
-  .book-container {
-    margin: 1rem;
-    padding: 1.5rem;
-  }
-}
-
-
-
-/* ------------------------------
-   Confirmation Page Styles
---------------------------------*/
-.confirmation-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
-  background-color: #f7f9fb;
-}
-
-.confirmation-card {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  max-width: 450px;
-}
-
-.checkmark {
-  font-size: 3rem;
-  color: #2ecc71;
-  background: #e8f9ee;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1rem;
-}
-
-.confirmation-card h2 {
-  color: #0078d4;
-  margin-bottom: 1rem;
-}
-
-.confirmation-card p {
-  color: #555;
-  margin-bottom: 2rem;
-}
-
-.back-btn {
-  display: inline-block;
-  background-color: #0078d4;
-  color: white;
-  padding: 0.8rem 1.5rem;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background 0.3s;
-}
-
-.back-btn:hover {
-  background-color: #005fa3;
+/* responsive tweaks */
+@media (min-width:900px){
+  .hero{padding:56px}
 }
