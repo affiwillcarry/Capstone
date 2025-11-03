@@ -1,4 +1,4 @@
-/* ==== Community Healthcare Portal – Enhanced Modern CSS with Background & Doctor Section ==== */
+/* ==== Community Healthcare Portal – Enhanced Modern CSS ==== */
 
 :root {
   --brand: #0078d4;
@@ -45,4 +45,118 @@ nav {
 
 nav a {
   color: #fff;
-  te
+  text-decoration: none;
+  font-weight: 600;
+  transition: opacity 0.3s;
+}
+
+nav a:hover {
+  opacity: 0.8;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  text-align: center;
+  padding: 5rem 1rem;
+  background: linear-gradient(180deg, #f2f7ff, #eaf3ff);
+  border-bottom: 1px solid #dbe6f2;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+.hero h2 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #0a3b71;
+  margin-bottom: 0.5rem;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+
+.hero button {
+  background: var(--brand);
+  color: #fff;
+  border: none;
+  padding: 0.9rem 1.8rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hero button:hover {
+  background: var(--brand-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 120, 212, 0.3);
+}
+
+/* ---------- Features ---------- */
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 3rem 2rem;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  width: 300px;
+  padding: 1.5rem;
+  text-align: left;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeUp 1.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+  color: var(--brand);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* ---------- Footer ---------- */
+footer {
+  background: var(--brand);
+  color: #fff;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+}
+
+/* ---------- Animations ---------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .features { flex-direction: column; align-items: center; }
+  .card { width: 90%; }
+  .hero h2 { font-size: 2rem; }
+}
