@@ -5,89 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Book Appointment - Community Healthcare</title>
   <link rel="stylesheet" href="/css/style.css" />
-  <style>
-    .book-page {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #f4f8fb, #eaf3f9);
-      padding: 3rem 1rem;
-    }
-
-    .book-container {
-      width: 100%;
-      max-width: 650px;
-      background: #fff;
-      border-radius: 12px;
-      padding: 2.5rem;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .book-container:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-
-    .book-container h2 {
-      text-align: center;
-      color: #0078d4;
-      margin-bottom: 2rem;
-      font-size: 1.8rem;
-    }
-
-    .clean-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-    }
-
-    .clean-form label {
-      font-weight: 600;
-      color: #333;
-    }
-
-    .clean-form input,
-    .clean-form select,
-    .clean-form textarea {
-      width: 100%;
-      padding: 1rem;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-      transition: all 0.2s ease;
-    }
-
-    .clean-form input:focus,
-    .clean-form select:focus,
-    .clean-form textarea:focus {
-      border-color: #0078d4;
-      box-shadow: 0 0 6px rgba(0, 120, 212, 0.3);
-      outline: none;
-    }
-
-    .submit-btn {
-      background-color: #0078d4;
-      color: #fff;
-      border: none;
-      padding: 1rem;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
-    }
-
-    .submit-btn:hover {
-      background-color: #005fa3;
-      transform: translateY(-2px);
-    }
-
-    footer {
-      margin-top: 2rem;
-    }
-  </style>
 </head>
 <body>
   <header>
@@ -100,16 +17,24 @@
     </nav>
   </header>
 
-  <main class="book-page">
-    <section class="book-container">
+  <main class="book-section">
+    <div class="book-header">
       <h2>Book Your Appointment</h2>
-      <form id="appointmentForm" class="clean-form" method="POST" action="/book">
+      <p>Please fill out the details below and confirm your visit.</p>
+    </div>
+
+    <form id="appointment-form" class="appointment-form">
+      <div class="form-group">
         <label for="name">Full Name</label>
         <input type="text" id="name" name="name" placeholder="Enter your full name" required />
+      </div>
 
+      <div class="form-group">
         <label for="email">Email Address</label>
         <input type="email" id="email" name="email" placeholder="you@example.com" required />
+      </div>
 
+      <div class="form-group">
         <label for="clinic">Choose Clinic</label>
         <select id="clinic" name="clinic" required>
           <option value="">-- Select Clinic --</option>
@@ -117,16 +42,20 @@
           <option>Northside Family Clinic</option>
           <option>Calgary Health Point</option>
         </select>
+      </div>
 
+      <div class="form-group">
         <label for="date">Preferred Date</label>
         <input type="date" id="date" name="date" required />
+      </div>
 
+      <div class="form-group">
         <label for="reason">Reason for Visit</label>
         <textarea id="reason" name="reason" rows="4" placeholder="Describe your concern..." required></textarea>
+      </div>
 
-        <button type="submit" class="submit-btn">Confirm Appointment</button>
-      </form>
-    </section>
+      <button type="submit" class="submit-btn">Confirm Appointment</button>
+    </form>
   </main>
 
   <footer>
