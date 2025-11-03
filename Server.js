@@ -38,8 +38,8 @@ app.post("/book", async (req, res) => {
     await axios.post("https://api.emailjs.com/api/v1.0/email/send", {
       service_id: "service_p2nx89g",
       template_id: "template_illv0yi",
-      user_id: "hHuE0c56crs3AyYQg", // Public Key
-      accessToken: "DvIlDKUtEWQY2UFoGO9Bo", // ✅ Your Private Key
+      user_id: "hHuE0c56crs3AyYQg", // Public key
+      accessToken: "DvIlDKUtEWQY2UFoGO9Bo", // ✅ Your private key
       template_params: {
         name,
         email,
