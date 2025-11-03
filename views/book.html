@@ -6,7 +6,6 @@
   <title>Book Appointment - Community Healthcare</title>
   <link rel="stylesheet" href="/css/style.css" />
   <style>
-    /* Page background and layout */
     .book-page {
       display: flex;
       justify-content: center;
@@ -16,7 +15,6 @@
       padding: 3rem 1rem;
     }
 
-    /* Appointment form card */
     .book-container {
       width: 100%;
       max-width: 650px;
@@ -32,7 +30,6 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
-    /* Title */
     .book-container h2 {
       text-align: center;
       color: #0078d4;
@@ -40,7 +37,6 @@
       font-size: 1.8rem;
     }
 
-    /* Form fields */
     .clean-form {
       display: flex;
       flex-direction: column;
@@ -71,7 +67,6 @@
       outline: none;
     }
 
-    /* Submit button */
     .submit-btn {
       background-color: #0078d4;
       color: #fff;
@@ -85,4 +80,57 @@
     }
 
     .submit-btn:hover {
-      background-color: #005fa3
+      background-color: #005fa3;
+      transform: translateY(-2px);
+    }
+
+    footer {
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Community Healthcare Portal</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/book" class="active">Book Appointment</a>
+      <a href="#">Chat Support</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <main class="book-page">
+    <section class="book-container">
+      <h2>Book Your Appointment</h2>
+      <form id="appointmentForm" class="clean-form" method="POST" action="/book">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your full name" required />
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required />
+
+        <label for="clinic">Choose Clinic</label>
+        <select id="clinic" name="clinic" required>
+          <option value="">-- Select Clinic --</option>
+          <option>Downtown Medical Center</option>
+          <option>Northside Family Clinic</option>
+          <option>Calgary Health Point</option>
+        </select>
+
+        <label for="date">Preferred Date</label>
+        <input type="date" id="date" name="date" required />
+
+        <label for="reason">Reason for Visit</label>
+        <textarea id="reason" name="reason" rows="4" placeholder="Describe your concern..." required></textarea>
+
+        <button type="submit" class="submit-btn">Confirm Appointment</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Community Healthcare Platform</p>
+  </footer>
+</body>
+</html>
