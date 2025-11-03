@@ -1,10 +1,6 @@
-document.getElementById("book-now").addEventListener("click", () => {
-  window.location.href = "/book";
-});
-
 // =============================
 // main.js – Community Healthcare Portal
-// Handles navigation + appointment form email notifications
+// Handles navigation + EmailJS appointment confirmation
 // =============================
 
 // ---- Home Page: "Get Started" button ----
@@ -16,18 +12,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ---- Book Page: Appointment Form ----
-  const form = document.getElementById("appointmentForm");
+  // ---- Book Appointment Page ----
+  const form = document.querySelector("form.clean-form");
   if (form) {
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      // Disable button and show sending state
       const submitBtn = form.querySelector(".submit-btn");
       submitBtn.disabled = true;
       submitBtn.textContent = "Sending...";
 
-      // Collect form data
       const templateParams = {
         name: document.getElementById("name").value,
         email: document.getElementById("email").value,
@@ -36,27 +30,22 @@ document.addEventListener("DOMContentLoaded", () => {
         reason: document.getElementById("reason").value,
       };
 
-      console.log("📤 Sending EmailJS request:", templateParams);
+      console.log("📤 Sending EmailJS with params:", templateParams);
 
-      // ---- EmailJS Send ----
+      // ✅ Your real EmailJS details
       emailjs
-        .send("service_xxxxxx", "template_xxxxxx", templateParams)
+        .send("service_p2nx89g", "template_illv0yi", templateParams)
         .then(
-          function (response) {
-            console.log("✅ Email sent successfully!", response.status, response.text);
+          (response) => {
+            console.log("✅ SUCCESS!", response.status, response.text);
+            submitBtn.textContent = "Confirmed ✓";
 
-            // Small delay for smooth UX
             setTimeout(() => {
               window.location.href = "/confirmation";
-            }, 1000);
+            }, 1200);
           },
-          function (error) {
-            console.error("❌ Email failed to send:", error);
-            alert("Appointment saved, but email could not be sent. Please check your network or EmailJS setup.");
+          (error) => {
+            console.error("❌ FAILED...", error);
+            alert("Email could not be sent. Please check your EmailJS setup or internet connection.");
             submitBtn.disabled = false;
             submitBtn.textContent = "Confirm Appointment";
-          }
-        );
-    });
-  }
-});
