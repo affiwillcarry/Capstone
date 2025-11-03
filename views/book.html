@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,21 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Book Appointment - Community Healthcare</title>
   <link rel="stylesheet" href="/css/style.css" />
-  <style>
-    .confirmation {
-      display: none;
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 10px;
-      background: #e6ffe6;
-      color: #064d06;
-      border: 1px solid #8cd98c;
-      text-align: center;
-      font-size: 1.1em;
-    }
-  </style>
 </head>
-
 <body>
   <header>
     <h1>Book Appointment</h1>
@@ -33,7 +20,7 @@
 
   <main class="book-container">
     <h2>Book Your Appointment</h2>
-    <form id="appointmentForm" class="clean-form">
+    <form action="/book" method="POST" class="clean-form">
       <label for="name">Full Name</label>
       <input type="text" id="name" name="name" placeholder="Enter your full name" required />
 
@@ -56,51 +43,10 @@
 
       <button type="submit" class="submit-btn">Confirm Appointment</button>
     </form>
-
-    <div class="confirmation" id="confirmationMessage">
-      ✅ Thank you! Your appointment request has been received.  
-      A confirmation email will be sent shortly.
-    </div>
   </main>
 
   <footer>
     <p>© 2025 Community Healthcare Platform</p>
   </footer>
-
-  <script>
-    const form = document.getElementById("appointmentForm");
-    const confirmation = document.getElementById("confirmationMessage");
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const formData = {
-        name: form.name.value,
-        email: form.email.value,
-        clinic: form.clinic.value,
-        date: form.date.value,
-        reason: form.reason.value
-      };
-
-      try {
-        const response = await fetch("https://yasir-hkexcffve9brh7d5.canadacentral-01.azurewebsites.net/api/HttpTrigger1?code=9oEvKw_M3RXYCgod4OM4zjgMJn5_m97AZxuxQEZNVrXMAzFuEUXcHg==", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData)
-        });
-
-        if (response.ok) {
-          form.reset();
-          confirmation.style.display = "block";
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        } else {
-          alert("Something went wrong. Please try again later.");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Error submitting appointment. Try again later.");
-      }
-    });
-  </script>
 </body>
 </html>
