@@ -1,3 +1,5 @@
+can you check this for me please
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,9 +56,9 @@
   <!-- ✅ EmailJS SDK -->
   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <script>
+    // Initialize EmailJS with your public key
     (function(){
-      // Initialize EmailJS with your public key
-      emailjs.init("hHuE0c56crs3AyYQg"); // 👉 Replace with your actual Public Key
+      emailjs.init("hHuE0c56crs3AyYQg"); // 👉 Replace with your actual Public Key from EmailJS
     })();
 
     // Handle form submission
@@ -67,19 +69,9 @@
       message.textContent = "Sending...";
       message.style.color = "#333";
 
-      // 1️⃣ Send the appointment details to your Outlook inbox
+      // Send the form via EmailJS
       emailjs.sendForm("service_p2nx89g", "template_illv0yi", this)
         .then(function() {
-          console.log("✅ Admin email sent");
-
-          // 2️⃣ Send the generic confirmation email to the user
-          emailjs.sendForm("service_p2nx89g", "template_confirmation123", document.getElementById("appointment-form"))
-            .then(function() {
-              console.log("✅ Confirmation email sent to user");
-            }, function(error) {
-              console.error("Confirmation email error:", error);
-            });
-
           message.textContent = "✅ Appointment request sent successfully!";
           message.style.color = "green";
           document.getElementById("appointment-form").reset();
