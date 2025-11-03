@@ -164,3 +164,94 @@ footer {
   .card { width: 90%; }
   .hero h2 { font-size: 2rem; }
 }
+
+/* ---------- Book Appointment Page ---------- */
+
+.book-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f4f8fb, #eaf3f9);
+  padding: 3rem 1rem;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.book-container {
+  width: 100%;
+  max-width: 650px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 2.5rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.book-container h2 {
+  text-align: center;
+  color: var(--brand);
+  margin-bottom: 1.8rem;
+  font-size: 1.9rem;
+  font-weight: 700;
+}
+
+.clean-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.clean-form label {
+  font-weight: 600;
+  color: #333;
+}
+
+.clean-form input,
+.clean-form select,
+.clean-form textarea {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccd6e0;
+  font-size: 1rem;
+  transition: all 0.25s ease;
+  background-color: #fff;
+}
+
+.clean-form input:focus,
+.clean-form select:focus,
+.clean-form textarea:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 6px rgba(0, 120, 212, 0.3);
+  outline: none;
+}
+
+.submit-btn {
+  background-color: var(--brand);
+  color: #fff;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.submit-btn:hover {
+  background-color: var(--brand-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 120, 212, 0.25);
+}
+
+@media (max-width: 600px) {
+  .book-container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+}
