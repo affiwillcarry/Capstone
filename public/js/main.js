@@ -1,4 +1,4 @@
-document.getElementById("book-now").addEventListener("click", () => {
-  alert("Feature coming soon! (Appointment booking page in next update)");
+document.getElementById("book-now").addEventListener("click", function () {
+  // Redirect straight to the booking page (no alert)
   window.location.href = "/book";
-}); 
+});
