@@ -5,122 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Appointment Confirmed - Community Healthcare</title>
   <link rel="stylesheet" href="/css/style.css" />
-  <style>
-    body {
-      font-family: "Segoe UI", Roboto, Arial, sans-serif;
-      background: linear-gradient(135deg, #f3f8fc, #eaf3f9);
-      margin: 0;
-      padding: 0;
-      color: #333;
-    }
-
-    header {
-      background: linear-gradient(90deg, #0078d4, #00a4ef);
-      color: #fff;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    header h1 {
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
-
-    nav a {
-      color: #fff;
-      margin-left: 1.2rem;
-      text-decoration: none;
-      font-weight: 600;
-      transition: opacity 0.3s;
-    }
-
-    nav a:hover {
-      opacity: 0.8;
-    }
-
-    .confirmation-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 75vh;
-      animation: fadeIn 1s ease-in-out;
-    }
-
-    .confirmation-card {
-      background: #fff;
-      padding: 2.5rem 3rem;
-      border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-      text-align: center;
-      max-width: 480px;
-      width: 90%;
-      animation: popUp 0.8s ease;
-    }
-
-    .checkmark {
-      font-size: 3rem;
-      color: #2ecc71;
-      background: #e9f9ee;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1rem;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .confirmation-card h2 {
-      color: #0078d4;
-      margin-bottom: 1rem;
-      font-size: 1.8rem;
-    }
-
-    .confirmation-card p {
-      color: #555;
-      margin-bottom: 2rem;
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-
-    .back-btn {
-      display: inline-block;
-      background: #0078d4;
-      color: #fff;
-      padding: 0.9rem 1.8rem;
-      border-radius: 6px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: background 0.3s ease, transform 0.2s ease;
-    }
-
-    .back-btn:hover {
-      background: #005fa3;
-      transform: translateY(-2px);
-    }
-
-    footer {
-      background: #0078d4;
-      color: #fff;
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes popUp {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-  </style>
 </head>
 <body>
   <header>
@@ -137,11 +21,7 @@
     <div class="confirmation-card">
       <div class="checkmark">✔</div>
       <h2>Appointment Confirmed!</h2>
-      <p>
-        Thank you for booking your appointment with
-        <strong>Community Healthcare</strong>.<br />
-        We’ve received your details successfully, and a confirmation email will be sent soon.
-      </p>
+      <p>Thank you for booking your appointment. We’ve received your details successfully.</p>
       <a href="/" class="back-btn">← Back to Home</a>
     </div>
   </main>
