@@ -1,3 +1,5 @@
+can you check this for me please
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +10,7 @@
 </head>
 <body>
   <header>
-    <h1>Community Healthcare Portal</h1>
+    <h1>Book Appointment</h1>
     <nav>
       <a href="/">Home</a>
       <a href="/book" class="active">Book Appointment</a>
@@ -17,47 +19,81 @@
     </nav>
   </header>
 
-  <main class="book-page">
-    <section class="book-container">
-      <h2>Book Your Appointment</h2>
+  <main class="book-container">
+    <h2>Book Your Appointment</h2>
+    <form id="appointment-form" class="clean-form">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter your full name" required />
 
-      <!-- This posts to your existing Express route: app.post("/book", ...) -->
-      <form class="clean-form" method="POST" action="/book">
-        <label for="name">Full Name</label>
-        <input type="text" id="name" name="name" placeholder="Enter your full name" required />
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required />
 
-        <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" placeholder="you@example.com" required />
+      <label for="clinic">Choose Clinic</label>
+      <select id="clinic" name="clinic" required>
+        <option value="">-- Select Clinic --</option>
+        <option>Downtown Medical Center</option>
+        <option>Northside Family Clinic</option>
+        <option>Calgary Health Point</option>
+      </select>
 
-        <label for="clinic">Choose Clinic</label>
-        <select id="clinic" name="clinic" required>
-          <option value="">-- Select Clinic --</option>
-          <option>Downtown Medical Center</option>
-          <option>Northside Family Clinic</option>
-          <option>Calgary Health Point</option>
-        </select>
+      <label for="date">Preferred Date</label>
+      <input type="date" id="date" name="date" required />
 
-        <label for="date">Preferred Date</label>
-        <input type="date" id="date" name="date" required />
+      <label for="reason">Reason for Visit</label>
+      <textarea id="reason" name="reason" rows="4" placeholder="Describe your concern..." required></textarea>
 
-        <label for="reason">Reason for Visit</label>
-        <textarea id="reason" name="reason" rows="4" placeholder="Describe your concern..." required></textarea>
+      <button type="submit" class="submit-btn">Confirm Appointment</button>
+    </form>
 
-        <button type="submit" class="submit-btn">Confirm Appointment</button>
-      </form>
-    </section>
+    <!-- Status message -->
+    <p id="message" style="margin-top: 15px;"></p>
   </main>
 
   <footer>
     <p>© 2025 Community Healthcare Platform</p>
   </footer>
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script>
-  (function() {
-    emailjs.init("hHuE0c56crs3AyYQg"); // ✅ your public key
-  })();
-</script>
-<script src="/js/main.js"></script>
 
+  <!-- ✅ EmailJS SDK -->
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    // Initialize EmailJS with your public key
+    (function(){
+      // Initialize EmailJS with your public key
+      emailjs.init("hHuE0c56crs3AyYQg"); // 👉 Replace with your actual Public Key
+      emailjs.init("hHuE0c56crs3AyYQg"); // 👉 Replace with your actual Public Key from EmailJS
+    })();
+
+    // Handle form submission
+    document.getElementById("appointment-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const message = document.getElementById("message");
+      message.textContent = "Sending...";
+      message.style.color = "#333";
+
+      // 1️⃣ Send the appointment details to your Outlook inbox
+      // Send the form via EmailJS
+      emailjs.sendForm("service_p2nx89g", "template_illv0yi", this)
+        .then(function() {
+          console.log("✅ Admin email sent");
+
+          // 2️⃣ Send the generic confirmation email to the user
+          emailjs.sendForm("service_p2nx89g", "template_confirmation123", document.getElementById("appointment-form"))
+            .then(function() {
+              console.log("✅ Confirmation email sent to user");
+            }, function(error) {
+              console.error("Confirmation email error:", error);
+            });
+
+          message.textContent = "✅ Appointment request sent successfully!";
+          message.style.color = "green";
+          document.getElementById("appointment-form").reset();
+        }, function(error) {
+          console.error("EmailJS error:", error);
+          message.textContent = "❌ Failed to send. Please try again later.";
+          message.style.color = "red";
+        });
+    });
+  </script>
 </body>
 </html>
