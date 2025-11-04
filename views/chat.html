@@ -22,7 +22,7 @@
       padding: 10px;
       background: white;
     }
-    .msg {
+    .message {
       margin: 8px 0;
       padding: 10px;
       border-radius: 8px;
@@ -62,7 +62,7 @@
 
   <main>
     <div class="chat-container">
-      <div class="messages" id="messages"></div>
+      <div class="messages" id="chatBox"></div>
       <div class="input-area">
         <input type="text" id="userInput" placeholder="Ask a health question..." />
         <button id="sendBtn">Send</button>
@@ -74,35 +74,7 @@
     <p>© 2025 Community Healthcare Platform</p>
   </footer>
 
-  <script>
-    const sendBtn = document.getElementById("sendBtn");
-    const userInput = document.getElementById("userInput");
-    const messages = document.getElementById("messages");
-
-    async function sendMessage() {
-      const question = userInput.value.trim();
-      if (!question) return;
-
-      // Display user message
-      messages.innerHTML += `<div class="msg user">${question}</div>`;
-      userInput.value = "";
-
-      // Fetch AI response
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question })
-      });
-
-      const data = await response.json();
-      messages.innerHTML += `<div class="msg bot">${data.answer}</div>`;
-      messages.scrollTop = messages.scrollHeight;
-    }
-
-    sendBtn.addEventListener("click", sendMessage);
-    userInput.addEventListener("keypress", e => {
-      if (e.key === "Enter") sendMessage();
-    });
-  </script>
+  <!-- ✅ Link external JS file -->
+  <script src="/js/chat.js"></script>
 </body>
 </html>
