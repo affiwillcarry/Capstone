@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import OpenAI from "@azure/openai";
+import { OpenAIClient, AzureKeyCredential } from "@azure/openai";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,44 +19,34 @@ if (!endpoint || !apiKey || !deployment) {
   process.exit(1);
 }
 
-// Create client
-const client = new OpenAI({
-  endpoint,
-  apiKey,
-  apiVersion: "2024-02-01", // works for current Azure OpenAI
-  deployment,
-});
+// ✅ Correct class name for SDK v2.1.0
+const client = new OpenAIClient(endpoint, new AzureKeyCredential(apiKey));
 
 // Middleware
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Routes for main pages
+// Page routes
 app.get("/", (req, res) => res.sendFile(path.join(__dirname, "views", "index.html")));
 app.get("/book", (req, res) => res.sendFile(path.join(__dirname, "views", "book.html")));
 app.get("/confirmation", (req, res) => res.sendFile(path.join(__dirname, "views", "confirmation.html")));
 app.get("/chat", (req, res) => res.sendFile(path.join(__dirname, "views", "chat.html")));
 
-// Chat API using Azure OpenAI
+// AI Chat Route
 app.post("/api/chat", async (req, res) => {
   try {
     const { message } = req.body;
     if (!message) return res.status(400).json({ reply: "No message provided." });
 
-    const response = await client.chat.completions.create({
-      model: deployment, // deployment name from Azure
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are a friendly AI healthcare assistant. Provide general health guidance and wellness advice, but never medical diagnoses.",
-        },
-        { role: "user", content: message },
-      ],
-      max_tokens: 300,
-      temperature: 0.7,
-    });
+    const response = await client.getChatCompletions(deployment, [
+      {
+        role: "system",
+        content:
+          "You are a friendly AI healthcare assistant. Provide helpful, general health advice and wellness guidance (not medical diagnosis).",
+      },
+      { role: "user", content: message },
+    ]);
 
     const reply =
       response.choices?.[0]?.message?.content ||
