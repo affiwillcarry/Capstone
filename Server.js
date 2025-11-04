@@ -1,83 +1,62 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import bodyParser from "body-parser";
+import sgMail from "@sendgrid/mail";
 
+// Setup file paths
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Initialize app
 const app = express();
-const port = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080;
 
+// Middleware
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-// Home page
+// Set your SendGrid API key from environment variables
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+// Routes
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "index.html"));
 });
 
-// Book appointment page
 app.get("/book", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "book.html"));
 });
 
-// Handle form submission
-app.post("/book", (req, res) => {
-  // Extract form data (optional if you want to log later)
-  const { name, email, clinic, date, reason } = req.body;
-
-  console.log("New appointment booked:");
-  console.log(`Name: ${name}`);
-  console.log(`Email: ${email}`);
-  console.log(`Clinic: ${clinic}`);
-  console.log(`Date: ${date}`);
-  console.log(`Reason: ${reason}`);
-
-  // Show styled confirmation page
-  res.sendFile(path.join(__dirname, "views", "confirmation.html"));
-});
-
-const express = require('express');
-const bodyParser = require('body-parser');
-const sgMail = require('@sendgrid/mail');
-
-const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-// Put your SendGrid API key here or in environment variables
-sgMail.setApiKey(process.env.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);
-
-app.post('/book', async (req, res) => {
+app.post("/book", async (req, res) => {
   const { name, email, clinic, date, reason } = req.body;
 
   try {
-    // Confirmation to patient
+    // Confirmation email to the user
     await sgMail.send({
       to: email,
-      from: 'mohammedarfat663@gmail.com', // must be verified sender in SendGrid
-      subject: 'Appointment Confirmation',
+      from: "mohammedarfat663@gmail.com", // must be a verified sender in SendGrid
+      subject: "Appointment Confirmation",
       text: `Hi ${name}, your appointment at ${clinic} is confirmed for ${date}.`,
     });
 
-    // Notification to you (clinic admin)
+    // Notification email to clinic admin
     await sgMail.send({
-      to: 'mohammedarfat663@gmail.com',
-      from: 'mohammedarfat663@gmail.com',
-      subject: 'New Appointment Booking',
+      to: "mohammedarfat663@gmail.com",
+      from: "mohammedarfat663@gmail.com",
+      subject: "New Appointment Booking",
       text: `${name} booked an appointment at ${clinic} on ${date}. Reason: ${reason}`,
     });
 
-    res.send('Appointment confirmed!');
+    res.sendFile(path.join(__dirname, "views", "confirmation.html"));
   } catch (err) {
     console.error(err);
-    res.status(500).send('Failed to send email');
+    res.status(500).send("Failed to send email");
   }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on ${PORT}`));
-
-
 // Start server
-app.listen(port, () => console.log(`✅ Server running on port ${port}`));
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`✅ Server running on http://0.0.0.0:${PORT}`);
+});
