@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import { OpenAIClient, AzureKeyCredential } from "@azure/openai";
+import OpenAI from "@azure/openai";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,53 +11,63 @@ const PORT = process.env.PORT || 8080;
 
 // Azure OpenAI setup
 const endpoint = process.env.AZURE_OPENAI_ENDPOINT;
-const apiKey   = process.env.AZURE_OPENAI_KEY;
+const apiKey = process.env.AZURE_OPENAI_KEY;
 const deployment = process.env.AZURE_OPENAI_DEPLOYMENT;
 
 if (!endpoint || !apiKey || !deployment) {
-  console.error("❌ Azure OpenAI configuration missing. Please set environment variables.");
+  console.error("❌ Missing Azure OpenAI configuration. Please check your environment variables.");
   process.exit(1);
 }
 
-const client = new OpenAIClient(endpoint, new AzureKeyCredential(apiKey));
+// Create client
+const client = new OpenAI({
+  endpoint,
+  apiKey,
+  apiVersion: "2024-02-01", // works for current Azure OpenAI
+  deployment,
+});
 
 // Middleware
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Routes for pages
-app.get("/",        (req, res) => res.sendFile(path.join(__dirname, "views", "index.html")));
-app.get("/book",    (req, res) => res.sendFile(path.join(__dirname, "views", "book.html")));
+// Routes for main pages
+app.get("/", (req, res) => res.sendFile(path.join(__dirname, "views", "index.html")));
+app.get("/book", (req, res) => res.sendFile(path.join(__dirname, "views", "book.html")));
 app.get("/confirmation", (req, res) => res.sendFile(path.join(__dirname, "views", "confirmation.html")));
-app.get("/chat",    (req, res) => res.sendFile(path.join(__dirname, "views", "chat.html")));
+app.get("/chat", (req, res) => res.sendFile(path.join(__dirname, "views", "chat.html")));
 
-// Chat API route using Azure OpenAI
+// Chat API using Azure OpenAI
 app.post("/api/chat", async (req, res) => {
   try {
     const { message } = req.body;
-    if (!message) {
-      return res.status(400).json({ reply: "No message provided." });
-    }
+    if (!message) return res.status(400).json({ reply: "No message provided." });
 
-    const result = await client.getChatCompletions(deployment, {
+    const response = await client.chat.completions.create({
+      model: deployment, // deployment name from Azure
       messages: [
-        { role: "system", content: "You are a helpful healthcare assistant providing general guidance (not medical advice)." },
-        { role: "user",   content: message }
+        {
+          role: "system",
+          content:
+            "You are a friendly AI healthcare assistant. Provide general health guidance and wellness advice, but never medical diagnoses.",
+        },
+        { role: "user", content: message },
       ],
-      maxTokens: 300,
+      max_tokens: 300,
       temperature: 0.7,
     });
 
-    const reply = result.choices && result.choices[0] && result.choices[0].message && result.choices[0].message.content
-      ? result.choices[0].message.content
-      : "❌ Unable to generate response at this time.";
+    const reply =
+      response.choices?.[0]?.message?.content ||
+      "⚠️ Sorry, I couldn’t generate a response right now.";
 
     res.json({ reply });
-
   } catch (error) {
     console.error("Azure OpenAI error:", error);
-    res.json({ reply: "⚠️ The AI assistant is temporarily unavailable. Please try again later." });
+    res.json({
+      reply: "⚠️ The AI assistant is temporarily unavailable. Please try again later.",
+    });
   }
 });
 
