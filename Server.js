@@ -1,7 +1,6 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import axios from "axios"; // ✅ Added for EmailJS API calls
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,8 +21,9 @@ app.get("/book", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "book.html"));
 });
 
-// Handle form submission + send email via EmailJS
-app.post("/book", async (req, res) => {
+// Handle form submission
+app.post("/book", (req, res) => {
+  // Extract form data (optional if you want to log later)
   const { name, email, clinic, date, reason } = req.body;
 
   console.log("New appointment booked:");
@@ -33,29 +33,51 @@ app.post("/book", async (req, res) => {
   console.log(`Date: ${date}`);
   console.log(`Reason: ${reason}`);
 
+  // Show styled confirmation page
+  res.sendFile(path.join(__dirname, "views", "confirmation.html"));
+});
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const sgMail = require('@sendgrid/mail');
+
+const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Put your SendGrid API key here or in environment variables
+sgMail.setApiKey(process.env.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);
+
+app.post('/book', async (req, res) => {
+  const { name, email, clinic, date, reason } = req.body;
+
   try {
-    // ✅ Send email using EmailJS REST API (server-side)
-    await axios.post("https://api.emailjs.com/api/v1.0/email/send", {
-      service_id: "service_p2nx89g",
-      template_id: "template_illv0yi",
-      user_id: "hHuE0c56crs3AyYQg", // Public key
-      accessToken: "DvIlDKUtEWQY2UFoGO9Bo", // ✅ Your private key
-      template_params: {
-        name,
-        email,
-        clinic,
-        date,
-        reason,
-      },
+    // Confirmation to patient
+    await sgMail.send({
+      to: email,
+      from: 'mohammedarfat663@gmail.com', // must be verified sender in SendGrid
+      subject: 'Appointment Confirmation',
+      text: `Hi ${name}, your appointment at ${clinic} is confirmed for ${date}.`,
     });
 
-    console.log("✅ Email sent successfully via EmailJS.");
-    res.sendFile(path.join(__dirname, "views", "confirmation.html"));
-  } catch (error) {
-    console.error("❌ Failed to send EmailJS message:", error.message);
-    res.status(500).send("Error sending confirmation email.");
+    // Notification to you (clinic admin)
+    await sgMail.send({
+      to: 'mohammedarfat663@gmail.com',
+      from: 'mohammedarfat663@gmail.com',
+      subject: 'New Appointment Booking',
+      text: `${name} booked an appointment at ${clinic} on ${date}. Reason: ${reason}`,
+    });
+
+    res.send('Appointment confirmed!');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Failed to send email');
   }
 });
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+
 
 // Start server
 app.listen(port, () => console.log(`✅ Server running on port ${port}`));
