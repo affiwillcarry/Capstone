@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Health Chat - Community Healthcare Portal</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .chat-container {
+      max-width: 700px;
+      margin: 50px auto;
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .messages {
+      height: 400px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      padding: 10px;
+      background: white;
+    }
+    .msg {
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .user { background: #d9edf7; text-align: right; }
+    .bot { background: #e9ffe9; text-align: left; }
+    .input-area {
+      display: flex;
+      gap: 10px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      background: #0078d7;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AI Health Chat</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/book">Book Appointment</a>
+      <a href="/chat" class="active">Chat Support</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="chat-container">
+      <div class="messages" id="messages"></div>
+      <div class="input-area">
+        <input type="text" id="userInput" placeholder="Ask a health question..." />
+        <button id="sendBtn">Send</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Community Healthcare Platform</p>
+  </footer>
+
+  <script>
+    const sendBtn = document.getElementById("sendBtn");
+    const userInput = document.getElementById("userInput");
+    const messages = document.getElementById("messages");
+
+    async function sendMessage() {
+      const question = userInput.value.trim();
+      if (!question) return;
+
+      // Display user message
+      messages.innerHTML += `<div class="msg user">${question}</div>`;
+      userInput.value = "";
+
+      // Fetch AI response
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question })
+      });
+
+      const data = await response.json();
+      messages.innerHTML += `<div class="msg bot">${data.answer}</div>`;
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    userInput.addEventListener("keypress", e => {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+</body>
+</html>
