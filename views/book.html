@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,80 +18,214 @@
   </header>
 
   <main class="book-container">
-    <h2>Book Your Appointment</h2>
-    <form id="appointment-form" class="clean-form">
-      <label for="name">Full Name</label>
-      <input type="text" id="name" name="name" placeholder="Enter your full name" required />
 
-      <label for="email">Email Address</label>
-      <input type="email" id="email" name="email" placeholder="you@example.com" required />
+    <!-- Step 1: Choose clinic + doctor -->
+    <section class="clinic-chooser">
+      <h2>Step 1: Choose a clinic and doctor</h2>
+      <p id="selection-hint">Click a card below to pick a clinic and see a suggested date.</p>
 
-      <label for="clinic">Choose Clinic</label>
-      <select id="clinic" name="clinic" required>
-        <option value="">-- Select Clinic --</option>
-        <option>Downtown Medical Center</option>
-        <option>Northside Family Clinic</option>
-        <option>Calgary Health Point</option>
-      </select>
+      <div class="clinic-grid">
+        <!-- Card 1 -->
+        <button
+          type="button"
+          class="clinic-card"
+          data-clinic="Downtown Medical Center"
+          data-doctor="Dr. Sarah Lee"
+          data-slot="2025-11-20"
+        >
+          <h3>Downtown Medical Center</h3>
+          <p><strong>Doctor:</strong> Dr. Sarah Lee</p>
+          <p><strong>Next available:</strong> Nov 20 (Morning)</p>
+          <p class="card-note">Good for general checkups and walk-in style visits.</p>
+        </button>
 
-      <label for="date">Preferred Date</label>
-      <input type="date" id="date" name="date" required />
+        <!-- Card 2 -->
+        <button
+          type="button"
+          class="clinic-card"
+          data-clinic="Northside Family Clinic"
+          data-doctor="Dr. Ahmed Khan"
+          data-slot="2025-11-21"
+        >
+          <h3>Northside Family Clinic</h3>
+          <p><strong>Doctor:</strong> Dr. Ahmed Khan</p>
+          <p><strong>Next available:</strong> Nov 21 (Afternoon)</p>
+          <p class="card-note">Family doctor style clinic, good for ongoing care.</p>
+        </button>
 
-      <label for="reason">Reason for Visit</label>
-      <textarea id="reason" name="reason" rows="4" placeholder="Describe your concern..." required></textarea>
+        <!-- Card 3 -->
+        <button
+          type="button"
+          class="clinic-card"
+          data-clinic="Calgary Health Point"
+          data-doctor="Dr. Emily Wong"
+          data-slot="2025-11-22"
+        >
+          <h3>Calgary Health Point</h3>
+          <p><strong>Doctor:</strong> Dr. Emily Wong</p>
+          <p><strong>Next available:</strong> Nov 22 (Evening)</p>
+          <p class="card-note">Walk-in friendly and good for simple concerns.</p>
+        </button>
+      </div>
+    </section>
 
-      <button type="submit" class="submit-btn">Confirm Appointment</button>
-    </form>
+    <!-- Step 2 + 3: Booking form -->
+    <section class="booking-section">
+      <h2>Step 2: Enter your details</h2>
+      <form id="appointment-form" class="clean-form">
+        <label for="name">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Enter your full name"
+          required
+        />
 
-    <!-- Status message -->
-    <p id="message" style="margin-top: 15px;"></p>
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="you@example.com"
+          required
+        />
+
+        <label for="clinic">Choose Clinic</label>
+        <select id="clinic" name="clinic" required>
+          <option value="">-- Select Clinic --</option>
+          <option>Downtown Medical Center</option>
+          <option>Northside Family Clinic</option>
+          <option>Calgary Health Point</option>
+        </select>
+
+        <!-- Hidden doctor field so EmailJS can receive it too -->
+        <input type="hidden" id="doctor" name="doctor" />
+
+        <label for="date">Preferred Date</label>
+        <input type="date" id="date" name="date" required />
+
+        <label for="reason">Reason for Visit</label>
+        <textarea
+          id="reason"
+          name="reason"
+          rows="4"
+          placeholder="Describe your concern..."
+          required
+        ></textarea>
+
+        <button type="submit" class="submit-btn">
+          Step 3: Confirm Appointment
+        </button>
+      </form>
+
+      <!-- Status message -->
+      <p id="message" style="margin-top: 15px;"></p>
+    </section>
   </main>
 
   <footer>
     <p>© 2025 Community Healthcare Platform</p>
   </footer>
 
-  <!-- ✅ EmailJS SDK -->
+  <!-- EmailJS SDK -->
   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <script>
-    // Initialize EmailJS with your public key
-    (function(){
-      // Initialize EmailJS with your public key
-      emailjs.init("hHuE0c56crs3AyYQg"); // 👉 Replace with your actual Public Key
-      emailjs.init("hHuE0c56crs3AyYQg"); // 👉 Replace with your actual Public Key from EmailJS
+    (function () {
+      // ✅ Initialize EmailJS once
+      emailjs.init("hHuE0c56crs3AyYQg"); // keep your own public key
     })();
 
-    // Handle form submission
-    document.getElementById("appointment-form").addEventListener("submit", function(e) {
-      e.preventDefault();
+    // Step 1: handle clinic card clicks
+    const clinicCards = document.querySelectorAll(".clinic-card");
+    const clinicSelect = document.getElementById("clinic");
+    const dateInput = document.getElementById("date");
+    const reasonField = document.getElementById("reason");
+    const doctorInput = document.getElementById("doctor");
+    const selectionHint = document.getElementById("selection-hint");
 
-      const message = document.getElementById("message");
-      message.textContent = "Sending...";
-      message.style.color = "#333";
+    clinicCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const clinicName = card.dataset.clinic;
+        const doctorName = card.dataset.doctor;
+        const slotDate = card.dataset.slot;
 
-      // 1️⃣ Send the appointment details to your Outlook inbox
-      // Send the form via EmailJS
-      emailjs.sendForm("service_p2nx89g", "template_illv0yi", this)
-        .then(function() {
-          console.log("✅ Admin email sent");
+        // Set clinic in dropdown
+        clinicSelect.value = clinicName;
 
-          // 2️⃣ Send the generic confirmation email to the user
-          emailjs.sendForm("service_p2nx89g", "template_confirmation123", document.getElementById("appointment-form"))
-            .then(function() {
-              console.log("✅ Confirmation email sent to user");
-            }, function(error) {
-              console.error("Confirmation email error:", error);
-            });
+        // Auto-fill date only if empty
+        if (!dateInput.value && slotDate) {
+          dateInput.value = slotDate;
+        }
 
-          message.textContent = "✅ Appointment request sent successfully!";
-          message.style.color = "green";
-          document.getElementById("appointment-form").reset();
-        }, function(error) {
-          console.error("EmailJS error:", error);
-          message.textContent = "❌ Failed to send. Please try again later.";
-          message.style.color = "red";
-        });
+        // Save doctor for EmailJS
+        doctorInput.value = doctorName || "";
+
+        // Adjust placeholder to mention doctor
+        if (doctorName) {
+          reasonField.placeholder =
+            "Briefly describe why you want to see " + doctorName + "...";
+        }
+
+        // Update hint text
+        selectionHint.textContent =
+          "Selected " +
+          (doctorName || "doctor") +
+          " at " +
+          clinicName +
+          ". You can update the date and reason before confirming.";
+      });
     });
+
+    // Handle form submission (same EmailJS logic as before)
+    document
+      .getElementById("appointment-form")
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const message = document.getElementById("message");
+        message.textContent = "Sending...";
+        message.style.color = "#333";
+
+        // 1) Send to admin
+        emailjs
+          .sendForm("service_p2nx89g", "template_illv0yi", this)
+          .then(
+            function () {
+              console.log("Admin email sent");
+
+              // 2) Send confirmation to patient
+              emailjs
+                .sendForm(
+                  "service_p2nx89g",
+                  "template_confirmation123",
+                  document.getElementById("appointment-form")
+                )
+                .then(
+                  function () {
+                    console.log("Confirmation email sent to user");
+                  },
+                  function (error) {
+                    console.error("Confirmation email error:", error);
+                  }
+                );
+
+              message.textContent =
+                "✅ Appointment request sent successfully!";
+              message.style.color = "green";
+              document.getElementById("appointment-form").reset();
+              doctorInput.value = "";
+              selectionHint.textContent =
+                "Click a card above to pick a clinic and doctor.";
+            },
+            function (error) {
+              console.error("EmailJS error:", error);
+              message.textContent =
+                "❌ Failed to send. Please try again later.";
+              message.style.color = "red";
+            }
+          );
+      });
   </script>
 </body>
 </html>
