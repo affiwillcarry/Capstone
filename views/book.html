@@ -5,66 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Book Appointment - Community Healthcare</title>
   <link rel="stylesheet" href="/css/style.css" />
-
-  <style>
-    /* Additional UI improvements */
-
-    .doctor-grid {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-bottom: 25px;
-    }
-
-    .doctor-card {
-      border: 1px solid #ccc;
-      padding: 15px;
-      width: 260px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.2s;
-      background: #fafafa;
-    }
-
-    .doctor-card:hover {
-      border-color: #007bff;
-      background: #eef6ff;
-    }
-
-    .doctor-card.selected {
-      border-color: #007bff;
-      background: #dcecff;
-    }
-
-    .doctor-schedule-panel {
-      margin-top: 20px;
-      padding: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background: #f9f9f9;
-    }
-
-    .time-badges {
-      margin-top: 15px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .time-badge {
-      padding: 8px 12px;
-      border: 1px solid #007bff;
-      border-radius: 6px;
-      cursor: pointer;
-      background: white;
-      transition: 0.2s;
-    }
-
-    .time-badge:hover {
-      background: #007bff;
-      color: white;
-    }
-  </style>
 </head>
 <body>
   <header>
@@ -80,10 +20,9 @@
   <main class="book-container">
     <h2>Find a Doctor and Book Your Appointment</h2>
 
-    <!-- Doctor cards -->
+    <!-- Doctor cards + schedule -->
     <section class="doctor-section">
       <h3>Select a Doctor</h3>
-
       <div class="doctor-grid">
         <div class="doctor-card" data-doctor-id="dr_singh">
           <h4>Dr. Aisha Singh</h4>
@@ -102,14 +41,14 @@
         <div class="doctor-card" data-doctor-id="dr_patel">
           <h4>Dr. Meera Patel</h4>
           <p>Clinic: Calgary Health Point</p>
-          <p>Focus: Walk-in & Same-Day Care</p>
+          <p>Focus: Walk-in and Same-Day Care</p>
           <p class="doctor-times-short">Typical hours: 8:30 AM – 1:30 PM</p>
         </div>
       </div>
 
       <div class="doctor-schedule-panel">
         <h3>Selected Doctor Schedule</h3>
-        <p id="selected-doctor-text">Click on a doctor card to see available time slots.</p>
+        <p id="selected-doctor-text">Click on a doctor card or pick from the list to see available times.</p>
         <div id="time-badges" class="time-badges"></div>
       </div>
     </section>
@@ -118,22 +57,35 @@
 
     <!-- Booking form -->
     <h2>Book Your Appointment</h2>
-
     <form id="appointment-form" class="clean-form">
+      <!-- Hidden fields for EmailJS -->
       <input type="hidden" id="doctor" name="doctor" />
+      <input type="hidden" id="clinic" name="clinic" />
 
       <label for="name">Full Name</label>
-      <input type="text" id="name" name="name" required />
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Enter your full name"
+        required
+      />
 
       <label for="email">Email Address</label>
-      <input type="email" id="email" name="email" required />
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="you@example.com"
+        required
+      />
 
-      <label for="clinic">Choose Clinic</label>
-      <select id="clinic" name="clinic" required>
-        <option value="">-- Select Clinic --</option>
-        <option>Downtown Medical Center</option>
-        <option>Northside Family Clinic</option>
-        <option>Calgary Health Point</option>
+      <label for="doctorSelect">Choose Doctor</label>
+      <select id="doctorSelect" name="doctorSelect" required>
+        <option value="">-- Select Doctor --</option>
+        <option value="dr_singh">Dr. Aisha Singh — Downtown Medical Center</option>
+        <option value="dr_choi">Dr. Daniel Choi — Northside Family Clinic</option>
+        <option value="dr_patel">Dr. Meera Patel — Calgary Health Point</option>
       </select>
 
       <label for="date">Preferred Date</label>
@@ -142,134 +94,249 @@
       <label for="time">Preferred Time</label>
       <select id="time" name="time" required>
         <option value="">-- Select Time --</option>
+        <!-- Filled dynamically when doctor is selected -->
       </select>
 
       <label for="reason">Reason for Visit</label>
-      <textarea id="reason" name="reason" rows="4" required></textarea>
+      <textarea
+        id="reason"
+        name="reason"
+        rows="4"
+        placeholder="Describe your concern..."
+        required
+      ></textarea>
 
       <button type="submit" class="submit-btn">Confirm Appointment</button>
     </form>
 
-    <p id="message" style="margin-top: 10px;"></p>
+    <!-- Status message -->
+    <p id="message" style="margin-top: 15px;"></p>
   </main>
 
   <footer>
     <p>© 2025 Community Healthcare Platform</p>
   </footer>
 
+  <!-- EmailJS SDK -->
   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <script>
+    // Doctor schedules with REAL time slots
     const doctorSchedules = {
       dr_singh: {
+        id: "dr_singh",
         name: "Dr. Aisha Singh",
         clinic: "Downtown Medical Center",
         slots: [
-          "09:00 AM","09:30 AM","10:00 AM","10:30 AM",
-          "11:00 AM","01:00 PM","01:30 PM","02:00 PM",
-          "02:30 PM","03:00 PM"
+          "09:00 AM",
+          "09:30 AM",
+          "10:00 AM",
+          "10:30 AM",
+          "11:00 AM",
+          "01:00 PM",
+          "01:30 PM",
+          "02:00 PM",
+          "02:30 PM",
+          "03:00 PM"
         ]
       },
       dr_choi: {
+        id: "dr_choi",
         name: "Dr. Daniel Choi",
         clinic: "Northside Family Clinic",
         slots: [
-          "10:00 AM","10:30 AM","11:00 AM","11:30 AM",
-          "01:00 PM","01:30 PM","02:00 PM","03:00 PM",
-          "04:00 PM","04:30 PM"
+          "10:00 AM",
+          "10:30 AM",
+          "11:00 AM",
+          "11:30 AM",
+          "01:00 PM",
+          "01:30 PM",
+          "02:00 PM",
+          "03:00 PM",
+          "04:00 PM",
+          "04:30 PM"
         ]
       },
       dr_patel: {
+        id: "dr_patel",
         name: "Dr. Meera Patel",
         clinic: "Calgary Health Point",
         slots: [
-          "08:30 AM","09:00 AM","09:30 AM","10:00 AM",
-          "10:30 AM","11:00 AM","11:30 AM","12:00 PM",
-          "12:30 PM","01:00 PM"
+          "08:30 AM",
+          "09:00 AM",
+          "09:30 AM",
+          "10:00 AM",
+          "10:30 AM",
+          "11:00 AM",
+          "11:30 AM",
+          "12:00 PM",
+          "12:30 PM",
+          "01:00 PM"
         ]
       }
     };
 
+    // Initialize EmailJS with your public key (ONLY ONCE)
     (function () {
-      emailjs.init("hHuE0c56crs3AyYQg");
+      emailjs.init("hHuE0c56crs3AyYQg"); // your actual EmailJS public key
     })();
 
+    // Helper: set today's date as min date
     (function setMinDate() {
       const dateInput = document.getElementById("date");
       const today = new Date().toISOString().split("T")[0];
       dateInput.min = today;
     })();
 
+    // Handle doctor selection
     const doctorCards = document.querySelectorAll(".doctor-card");
     const selectedDoctorText = document.getElementById("selected-doctor-text");
-    const timeBadges = document.getElementById("time-badges");
-    const clinicSelect = document.getElementById("clinic");
+    const timeBadgesContainer = document.getElementById("time-badges");
     const doctorInput = document.getElementById("doctor");
+    const clinicInput = document.getElementById("clinic");
     const timeSelect = document.getElementById("time");
+    const doctorSelect = document.getElementById("doctorSelect");
 
-    function clearCardHighlights() {
-      doctorCards.forEach(c => c.classList.remove("selected"));
+    function clearSelectedDoctorCard() {
+      doctorCards.forEach(card => card.classList.remove("selected"));
     }
 
-    function fillTimeDropdown(times) {
-      timeSelect.innerHTML = `<option value="">-- Select Time --</option>`;
-      times.forEach(t => {
-        const option = document.createElement("option");
-        option.value = t;
-        option.textContent = t;
-        timeSelect.appendChild(option);
+    function populateTimeDropdown(slots) {
+      // Clear current options
+      timeSelect.innerHTML = "";
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.textContent = "-- Select Time --";
+      timeSelect.appendChild(defaultOption);
+
+      // Add new options
+      slots.forEach(slot => {
+        const opt = document.createElement("option");
+        opt.value = slot;
+        opt.textContent = slot;
+        timeSelect.appendChild(opt);
       });
     }
 
+    function updateDoctorSelection(docId) {
+      const doc = doctorSchedules[docId];
+      if (!doc) return;
+
+      // Highlight selected card (if any)
+      clearSelectedDoctorCard();
+      const matchingCard = document.querySelector(
+        '.doctor-card[data-doctor-id="' + docId + '"]'
+      );
+      if (matchingCard) {
+        matchingCard.classList.add("selected");
+      }
+
+      // Update hidden fields
+      doctorInput.value = doc.name;
+      clinicInput.value = doc.clinic;
+
+      // Sync dropdown
+      doctorSelect.value = doc.id;
+
+      // Update visible schedule text
+      selectedDoctorText.textContent =
+        doc.name + " — available times (example for your selected day):";
+
+      // Show time badges
+      timeBadgesContainer.innerHTML = "";
+      doc.slots.forEach(slot => {
+        const badge = document.createElement("span");
+        badge.className = "time-badge";
+        badge.textContent = slot;
+        badge.addEventListener("click", () => {
+          // When clicking badge, also set the dropdown value
+          timeSelect.value = slot;
+        });
+        timeBadgesContainer.appendChild(badge);
+      });
+
+      // Fill time dropdown
+      populateTimeDropdown(doc.slots);
+    }
+
+    // Click on doctor cards
     doctorCards.forEach(card => {
       card.addEventListener("click", () => {
-        const id = card.dataset.doctorId;
-        const doc = doctorSchedules[id];
-
-        clearCardHighlights();
-        card.classList.add("selected");
-
-        doctorInput.value = doc.name;
-        clinicSelect.value = doc.clinic;
-
-        selectedDoctorText.textContent = `${doc.name} — available time slots:`;
-
-        timeBadges.innerHTML = "";
-        doc.slots.forEach(time => {
-          const badge = document.createElement("span");
-          badge.className = "time-badge";
-          badge.textContent = time;
-          badge.onclick = () => (timeSelect.value = time);
-          timeBadges.appendChild(badge);
-        });
-
-        fillTimeDropdown(doc.slots);
+        const id = card.getAttribute("data-doctor-id");
+        updateDoctorSelection(id);
       });
     });
 
-    document.getElementById("appointment-form").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const msg = document.getElementById("message");
-
-      msg.textContent = "Sending...";
-      msg.style.color = "#555";
-
-      emailjs.sendForm("service_p2nx89g", "template_illv0yi", this)
-        .then(() => {
-          emailjs.sendForm("service_p2nx89g", "template_confirmation123", this);
-
-          msg.textContent = "Appointment request sent successfully!";
-          msg.style.color = "green";
-
-          this.reset();
-          clearCardHighlights();
-          timeBadges.innerHTML = "";
-          fillTimeDropdown([]);
-        })
-        .catch(() => {
-          msg.textContent = "Failed to send. Please try again.";
-          msg.style.color = "red";
-        });
+    // Change from doctor dropdown
+    doctorSelect.addEventListener("change", () => {
+      const selectedId = doctorSelect.value;
+      if (!selectedId) {
+        // Reset if none selected
+        clearSelectedDoctorCard();
+        doctorInput.value = "";
+        clinicInput.value = "";
+        selectedDoctorText.textContent =
+          "Click on a doctor card or pick from the list to see available times.";
+        timeBadgesContainer.innerHTML = "";
+        populateTimeDropdown([]);
+        return;
+      }
+      updateDoctorSelection(selectedId);
     });
+
+    // Handle form submission with EmailJS
+    document
+      .getElementById("appointment-form")
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const message = document.getElementById("message");
+        message.textContent = "Sending...";
+        message.style.color = "#333";
+
+        // Send to admin email
+        emailjs
+          .sendForm("service_p2nx89g", "template_illv0yi", this)
+          .then(function () {
+            console.log("Admin email sent");
+
+            // Send confirmation email to patient
+            emailjs
+              .sendForm(
+                "service_p2nx89g",
+                "template_confirmation123",
+                document.getElementById("appointment-form")
+              )
+              .then(
+                function () {
+                  console.log("Confirmation email sent");
+                },
+                function (error) {
+                  console.error("Confirmation email error:", error);
+                }
+              );
+
+            message.textContent =
+              "✅ Appointment request sent successfully!";
+            message.style.color = "green";
+            document.getElementById("appointment-form").reset();
+
+            // Reset UI state
+            clearSelectedDoctorCard();
+            doctorInput.value = "";
+            clinicInput.value = "";
+            doctorSelect.value = "";
+            selectedDoctorText.textContent =
+              "Click on a doctor card or pick from the list to see available times.";
+            timeBadgesContainer.innerHTML = "";
+            populateTimeDropdown([]);
+          })
+          .catch(function (error) {
+            console.error("EmailJS error:", error);
+            message.textContent =
+              "❌ Failed to send. Please try again later.";
+            message.style.color = "red";
+          });
+      });
   </script>
 </body>
 </html>
