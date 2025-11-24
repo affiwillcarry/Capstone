@@ -1,3 +1,7 @@
+/* ------------------------------
+   Base Layout
+--------------------------------*/
+
 body {
   font-family: "Segoe UI", sans-serif;
   margin: 0;
@@ -7,33 +11,67 @@ body {
 }
 
 header {
-  background-color: #0078d4;
+  background-color: #0b4f6c;
   color: white;
-  padding: 1rem;
-  text-align: center;
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
 }
 
 nav a {
   color: white;
-  margin: 0 1rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
   text-decoration: none;
   font-weight: 500;
+  font-size: 0.95rem;
 }
 
 nav a:hover {
-  text-decoration: underline;
+  background: rgba(255, 255, 255, 0.15);
 }
+
+nav a.active {
+  background: #fdbf57;
+  color: #0b4f6c;
+}
+
+footer {
+  background: #0b4f6c;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+/* ------------------------------
+   Home Page Hero + Feature Cards
+--------------------------------*/
 
 .hero {
   text-align: center;
   padding: 3rem 1rem;
-  background: linear-gradient(120deg, #0078d4, #00a4ef);
+  background: linear-gradient(135deg, #0b4f6c, #0078d4);
   color: white;
 }
 
 .hero button {
   background: white;
-  color: #0078d4;
+  color: #0b4f6c;
   border: none;
   padding: 0.8rem 1.5rem;
   font-size: 1rem;
@@ -51,7 +89,7 @@ nav a:hover {
   flex-wrap: wrap;
   justify-content: center;
   gap: 1.5rem;
-  padding: 2rem;
+  padding: 2rem 1rem;
 }
 
 .card {
@@ -63,39 +101,137 @@ nav a:hover {
   text-align: center;
 }
 
-footer {
-  background: #0078d4;
-  color: white;
-  text-align: center;
-  padding: 1rem;
-  margin-top: 2rem;
-}
-
-
-
 /* ------------------------------
-   Booking Form Layout
+   Booking Page Layout
 --------------------------------*/
 
+.book-page {
+  padding: 2rem 1rem 3rem;
+}
 
+/* Container around everything on /book */
 .book-container {
-  max-width: 600px;
-  margin: 2.5rem auto;
-  padding: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
   background: #ffffff;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  padding: 2rem 2.5rem;
 }
 
 .book-container h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #0078d4;
+  text-align: left;
+  margin-bottom: 1rem;
+  color: #0b4f6c;
 }
+
+/* Doctor cards + schedule section */
+
+.doctor-section {
+  display: grid;
+  grid-template-columns: 2fr 1.6fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.doctor-section h3 {
+  color: #0b4f6c;
+  margin-bottom: 0.75rem;
+}
+
+.doctor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.doctor-card {
+  background: #f4f8fc;
+  border-radius: 10px;
+  padding: 1rem;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: border 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+
+.doctor-card h4 {
+  margin: 0 0 0.4rem;
+  color: #0b4f6c;
+}
+
+.doctor-card p {
+  margin: 0.15rem 0;
+  font-size: 0.9rem;
+}
+
+.doctor-times-short {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.doctor-card:hover {
+  border-color: #0b4f6c;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.doctor-card.selected {
+  border-color: #fdbf57;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Right-side schedule panel */
+
+.doctor-schedule-panel {
+  background: #f9fbff;
+  border-radius: 10px;
+  padding: 1.2rem 1.4rem;
+  border: 1px solid #dde6f1;
+}
+
+.doctor-schedule-panel h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+#selected-doctor-text {
+  margin-bottom: 0.8rem;
+}
+
+/* Time badges */
+
+.time-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.time-badge {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: #e3f2fd;
+  color: #0b4f6c;
+  font-size: 0.85rem;
+  border: 1px solid #c5d9f1;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.05s;
+}
+
+.time-badge:hover {
+  background: #cfe6ff;
+  transform: translateY(-1px);
+}
+
+/* ------------------------------
+   Booking Form Styles
+--------------------------------*/
 
 .clean-form {
   display: flex;
   flex-direction: column;
+  margin-top: 1.5rem;
 }
 
 .clean-form label {
@@ -110,21 +246,22 @@ footer {
   margin-bottom: 1.2rem;
   padding: 0.8rem;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid #cbd2e1;
   font-size: 1rem;
   transition: border 0.2s, box-shadow 0.2s;
+  background: #ffffff;
 }
 
 .clean-form input:focus,
 .clean-form select:focus,
 .clean-form textarea:focus {
-  border-color: #0078d4;
-  box-shadow: 0 0 5px rgba(0, 120, 212, 0.3);
+  border-color: #0b4f6c;
+  box-shadow: 0 0 5px rgba(11, 79, 108, 0.3);
   outline: none;
 }
 
 .submit-btn {
-  background-color: #0078d4;
+  background-color: #0b4f6c;
   color: white;
   border: none;
   padding: 0.9rem;
@@ -132,25 +269,24 @@ footer {
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.05s;
 }
 
 .submit-btn:hover {
-  background-color: #005fa3;
+  background-color: #093b50;
+  transform: translateY(-1px);
 }
 
-@media (max-width: 600px) {
-  .book-container {
-    margin: 1rem;
-    padding: 1.5rem;
-  }
+/* Status message under form */
+
+#message {
+  font-size: 0.95rem;
 }
-
-
 
 /* ------------------------------
    Confirmation Page Styles
 --------------------------------*/
+
 .confirmation-container {
   display: flex;
   justify-content: center;
@@ -182,7 +318,7 @@ footer {
 }
 
 .confirmation-card h2 {
-  color: #0078d4;
+  color: #0b4f6c;
   margin-bottom: 1rem;
 }
 
@@ -193,7 +329,7 @@ footer {
 
 .back-btn {
   display: inline-block;
-  background-color: #0078d4;
+  background-color: #0b4f6c;
   color: white;
   padding: 0.8rem 1.5rem;
   border-radius: 6px;
@@ -203,5 +339,35 @@ footer {
 }
 
 .back-btn:hover {
-  background-color: #005fa3;
+  background-color: #093b50;
+}
+
+/* ------------------------------
+   Responsive tweaks
+--------------------------------*/
+
+@media (max-width: 900px) {
+  .doctor-section {
+    grid-template-columns: 1fr;
+  }
+
+  .doctor-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav {
+    margin-top: 0.75rem;
+  }
+
+  .book-container {
+    padding: 1.5rem;
+    margin: 1rem 0;
+  }
 }
