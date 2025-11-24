@@ -5,6 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Book Appointment - Community Healthcare</title>
   <link rel="stylesheet" href="/css/style.css" />
+
+  <style>
+    /* Additional UI improvements */
+
+    .doctor-grid {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
+
+    .doctor-card {
+      border: 1px solid #ccc;
+      padding: 15px;
+      width: 260px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+      background: #fafafa;
+    }
+
+    .doctor-card:hover {
+      border-color: #007bff;
+      background: #eef6ff;
+    }
+
+    .doctor-card.selected {
+      border-color: #007bff;
+      background: #dcecff;
+    }
+
+    .doctor-schedule-panel {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #f9f9f9;
+    }
+
+    .time-badges {
+      margin-top: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .time-badge {
+      padding: 8px 12px;
+      border: 1px solid #007bff;
+      border-radius: 6px;
+      cursor: pointer;
+      background: white;
+      transition: 0.2s;
+    }
+
+    .time-badge:hover {
+      background: #007bff;
+      color: white;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -20,9 +80,10 @@
   <main class="book-container">
     <h2>Find a Doctor and Book Your Appointment</h2>
 
-    <!-- Doctor cards + schedule -->
+    <!-- Doctor cards -->
     <section class="doctor-section">
       <h3>Select a Doctor</h3>
+
       <div class="doctor-grid">
         <div class="doctor-card" data-doctor-id="dr_singh">
           <h4>Dr. Aisha Singh</h4>
@@ -41,14 +102,14 @@
         <div class="doctor-card" data-doctor-id="dr_patel">
           <h4>Dr. Meera Patel</h4>
           <p>Clinic: Calgary Health Point</p>
-          <p>Focus: Walk-in and Same-Day Care</p>
+          <p>Focus: Walk-in & Same-Day Care</p>
           <p class="doctor-times-short">Typical hours: 8:30 AM – 1:30 PM</p>
         </div>
       </div>
 
       <div class="doctor-schedule-panel">
         <h3>Selected Doctor Schedule</h3>
-        <p id="selected-doctor-text">Click on a doctor card to see real available times.</p>
+        <p id="selected-doctor-text">Click on a doctor card to see available time slots.</p>
         <div id="time-badges" class="time-badges"></div>
       </div>
     </section>
@@ -57,27 +118,15 @@
 
     <!-- Booking form -->
     <h2>Book Your Appointment</h2>
+
     <form id="appointment-form" class="clean-form">
-      <!-- Hidden doctor field so it goes into EmailJS -->
       <input type="hidden" id="doctor" name="doctor" />
 
       <label for="name">Full Name</label>
-      <input
-        type="text"
-        id="name"
-        name="name"
-        placeholder="Enter your full name"
-        required
-      />
+      <input type="text" id="name" name="name" required />
 
       <label for="email">Email Address</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        placeholder="you@example.com"
-        required
-      />
+      <input type="email" id="email" name="email" required />
 
       <label for="clinic">Choose Clinic</label>
       <select id="clinic" name="clinic" required>
@@ -93,214 +142,134 @@
       <label for="time">Preferred Time</label>
       <select id="time" name="time" required>
         <option value="">-- Select Time --</option>
-        <!-- Filled dynamically when doctor is selected -->
       </select>
 
       <label for="reason">Reason for Visit</label>
-      <textarea
-        id="reason"
-        name="reason"
-        rows="4"
-        placeholder="Describe your concern..."
-        required
-      ></textarea>
+      <textarea id="reason" name="reason" rows="4" required></textarea>
 
       <button type="submit" class="submit-btn">Confirm Appointment</button>
     </form>
 
-    <!-- Status message -->
-    <p id="message" style="margin-top: 15px;"></p>
+    <p id="message" style="margin-top: 10px;"></p>
   </main>
 
   <footer>
     <p>© 2025 Community Healthcare Platform</p>
   </footer>
 
-  <!-- EmailJS SDK -->
   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <script>
-    // Doctor schedules with REAL time slots
     const doctorSchedules = {
       dr_singh: {
         name: "Dr. Aisha Singh",
         clinic: "Downtown Medical Center",
         slots: [
-          "09:00 AM",
-          "09:30 AM",
-          "10:00 AM",
-          "10:30 AM",
-          "11:00 AM",
-          "01:00 PM",
-          "01:30 PM",
-          "02:00 PM",
-          "02:30 PM",
-          "03:00 PM"
+          "09:00 AM","09:30 AM","10:00 AM","10:30 AM",
+          "11:00 AM","01:00 PM","01:30 PM","02:00 PM",
+          "02:30 PM","03:00 PM"
         ]
       },
       dr_choi: {
         name: "Dr. Daniel Choi",
         clinic: "Northside Family Clinic",
         slots: [
-          "10:00 AM",
-          "10:30 AM",
-          "11:00 AM",
-          "11:30 AM",
-          "01:00 PM",
-          "01:30 PM",
-          "02:00 PM",
-          "03:00 PM",
-          "04:00 PM",
-          "04:30 PM"
+          "10:00 AM","10:30 AM","11:00 AM","11:30 AM",
+          "01:00 PM","01:30 PM","02:00 PM","03:00 PM",
+          "04:00 PM","04:30 PM"
         ]
       },
       dr_patel: {
         name: "Dr. Meera Patel",
         clinic: "Calgary Health Point",
         slots: [
-          "08:30 AM",
-          "09:00 AM",
-          "09:30 AM",
-          "10:00 AM",
-          "10:30 AM",
-          "11:00 AM",
-          "11:30 AM",
-          "12:00 PM",
-          "12:30 PM",
-          "01:00 PM"
+          "08:30 AM","09:00 AM","09:30 AM","10:00 AM",
+          "10:30 AM","11:00 AM","11:30 AM","12:00 PM",
+          "12:30 PM","01:00 PM"
         ]
       }
     };
 
-    // Initialize EmailJS with your public key (ONLY ONCE)
     (function () {
-      emailjs.init("hHuE0c56crs3AyYQg"); // your actual EmailJS public key
+      emailjs.init("hHuE0c56crs3AyYQg");
     })();
 
-    // Helper: set today's date as min date
     (function setMinDate() {
       const dateInput = document.getElementById("date");
       const today = new Date().toISOString().split("T")[0];
       dateInput.min = today;
     })();
 
-    // Handle doctor selection
     const doctorCards = document.querySelectorAll(".doctor-card");
     const selectedDoctorText = document.getElementById("selected-doctor-text");
-    const timeBadgesContainer = document.getElementById("time-badges");
+    const timeBadges = document.getElementById("time-badges");
     const clinicSelect = document.getElementById("clinic");
     const doctorInput = document.getElementById("doctor");
     const timeSelect = document.getElementById("time");
 
-    function clearSelectedDoctorCard() {
-      doctorCards.forEach(card => card.classList.remove("selected"));
+    function clearCardHighlights() {
+      doctorCards.forEach(c => c.classList.remove("selected"));
     }
 
-    function populateTimeDropdown(slots) {
-      // Clear current options
-      timeSelect.innerHTML = "";
-      const defaultOption = document.createElement("option");
-      defaultOption.value = "";
-      defaultOption.textContent = "-- Select Time --";
-      timeSelect.appendChild(defaultOption);
-
-      // Add new options
-      slots.forEach(slot => {
-        const opt = document.createElement("option");
-        opt.value = slot;
-        opt.textContent = slot;
-        timeSelect.appendChild(opt);
+    function fillTimeDropdown(times) {
+      timeSelect.innerHTML = `<option value="">-- Select Time --</option>`;
+      times.forEach(t => {
+        const option = document.createElement("option");
+        option.value = t;
+        option.textContent = t;
+        timeSelect.appendChild(option);
       });
     }
 
     doctorCards.forEach(card => {
       card.addEventListener("click", () => {
-        const id = card.getAttribute("data-doctor-id");
+        const id = card.dataset.doctorId;
         const doc = doctorSchedules[id];
-        if (!doc) return;
 
-        // Highlight selected card
-        clearSelectedDoctorCard();
+        clearCardHighlights();
         card.classList.add("selected");
 
-        // Update hidden doctor field
         doctorInput.value = doc.name;
-
-        // Auto-set clinic dropdown
         clinicSelect.value = doc.clinic;
 
-        // Update visible schedule text
-        selectedDoctorText.textContent =
-          doc.name +
-          " — available times (example for your selected day):";
+        selectedDoctorText.textContent = `${doc.name} — available time slots:`;
 
-        // Show time badges
-        timeBadgesContainer.innerHTML = "";
-        doc.slots.forEach(slot => {
+        timeBadges.innerHTML = "";
+        doc.slots.forEach(time => {
           const badge = document.createElement("span");
           badge.className = "time-badge";
-          badge.textContent = slot;
-          badge.addEventListener("click", () => {
-            // When clicking badge, also set the dropdown value
-            timeSelect.value = slot;
-          });
-          timeBadgesContainer.appendChild(badge);
+          badge.textContent = time;
+          badge.onclick = () => (timeSelect.value = time);
+          timeBadges.appendChild(badge);
         });
 
-        // Fill time dropdown
-        populateTimeDropdown(doc.slots);
+        fillTimeDropdown(doc.slots);
       });
     });
 
-    // Handle form submission with EmailJS
-    document
-      .getElementById("appointment-form")
-      .addEventListener("submit", function (e) {
-        e.preventDefault();
+    document.getElementById("appointment-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const msg = document.getElementById("message");
 
-        const message = document.getElementById("message");
-        message.textContent = "Sending...";
-        message.style.color = "#333";
+      msg.textContent = "Sending...";
+      msg.style.color = "#555";
 
-        // Send to admin email
-        emailjs
-          .sendForm("service_p2nx89g", "template_illv0yi", this)
-          .then(function () {
-            console.log("Admin email sent");
+      emailjs.sendForm("service_p2nx89g", "template_illv0yi", this)
+        .then(() => {
+          emailjs.sendForm("service_p2nx89g", "template_confirmation123", this);
 
-            // Send confirmation email to patient
-            emailjs
-              .sendForm(
-                "service_p2nx89g",
-                "template_confirmation123",
-                document.getElementById("appointment-form")
-              )
-              .then(
-                function () {
-                  console.log("Confirmation email sent");
-                },
-                function (error) {
-                  console.error("Confirmation email error:", error);
-                }
-              );
+          msg.textContent = "Appointment request sent successfully!";
+          msg.style.color = "green";
 
-            message.textContent =
-              "✅ Appointment request sent successfully!";
-            message.style.color = "green";
-            document.getElementById("appointment-form").reset();
-            // Clear selection UI after reset
-            clearSelectedDoctorCard();
-            selectedDoctorText.textContent =
-              "Click on a doctor card to see real available times.";
-            timeBadgesContainer.innerHTML = "";
-            populateTimeDropdown([]);
-          })
-          .catch(function (error) {
-            console.error("EmailJS error:", error);
-            message.textContent =
-              "❌ Failed to send. Please try again later.";
-            message.style.color = "red";
-          });
-      });
+          this.reset();
+          clearCardHighlights();
+          timeBadges.innerHTML = "";
+          fillTimeDropdown([]);
+        })
+        .catch(() => {
+          msg.textContent = "Failed to send. Please try again.";
+          msg.style.color = "red";
+        });
+    });
   </script>
 </body>
 </html>
